@@ -1,0 +1,113 @@
+/* SpaceDash's space theme over Decap. Decap styles its parts with emotion, whose class
+   names carry the component's name (e.g. css-1abc-AppHeader), so parts are matched with
+   [class*="-Name"]. The site preview pane is left alone so it shows the real site. */
+:root {
+  --sd-bg: #070b24;
+  --sd-panel: #10173f;
+  --sd-panel-2: #151e52;
+  --sd-field: #0b1236;
+  --sd-line: rgba(130, 170, 255, .2);
+  --sd-text: #e8eeff;
+  --sd-muted: #9fb0e0;
+  --sd-accent: #3fc8ff;
+  --sd-accent-2: #8a6cff;
+  --sd-glow: 0 0 0 3px rgba(63, 200, 255, .28);
+}
+
+/* the sky: deep navy, a faint nebula and a scatter of stars */
+body {
+  color: var(--sd-text);
+  background:
+    radial-gradient(1px 1px at 12% 18%, #fff, transparent), radial-gradient(1px 1px at 34% 72%, #cfe2ff, transparent),
+    radial-gradient(1.5px 1.5px at 58% 26%, #fff, transparent), radial-gradient(1px 1px at 76% 64%, #fff, transparent),
+    radial-gradient(1px 1px at 90% 12%, #bfe0ff, transparent), radial-gradient(1px 1px at 22% 90%, #fff, transparent),
+    radial-gradient(50% 40% at 85% 10%, rgba(138, 108, 255, .18), transparent 70%),
+    radial-gradient(45% 35% at 5% 95%, rgba(63, 200, 255, .12), transparent 70%),
+    var(--sd-bg) !important;
+  background-attachment: fixed !important; min-height: 100vh;
+}
+[class*="-AppMainContainer"], [class*="-CollectionContainer"] { color: var(--sd-text); }
+
+/* top bar */
+[class*="-AppHeader-"], [class*="-AppHeader "] {
+  background: rgba(10, 15, 48, .88) !important; backdrop-filter: blur(10px);
+  box-shadow: 0 1px 0 var(--sd-line), 0 8px 30px rgba(0, 0, 20, .5) !important;
+}
+[class*="-AppHeaderButton"], [class*="-AppHeaderNavLink"], [class*="-AppHeaderSiteLink"] { color: var(--sd-muted) !important; }
+[class*="-AppHeaderNavLink"]:hover, [class*="-AppHeaderNavLink"].header-link-active,
+[class*="-AppHeaderButton"]:hover { color: var(--sd-accent) !important; }
+[class*="-AppHeaderNavLink"] svg, [class*="-AppHeaderButton"] svg { color: inherit !important; }
+
+/* panels: sidebar, collection top, list cards, the editor's control pane */
+/* emotion repeats the "card" mixin's name, so -card-card matches only real cards (not their headings) */
+[class*="-card-card"] {
+  background: var(--sd-panel) !important; color: var(--sd-text) !important;
+  box-shadow: 0 0 0 1px var(--sd-line), 0 10px 30px rgba(0, 0, 25, .45) !important;
+}
+[class*="-ListCard-card"]:hover { background: var(--sd-panel-2) !important; box-shadow: 0 0 0 1px rgba(63, 200, 255, .45), 0 10px 30px rgba(0, 0, 25, .45) !important; }
+[class*="-ListCardTitle"], [class*="-CollectionTopHeading"], [class*="-SidebarHeading"], h1, h2, h3 { color: var(--sd-text) !important; }
+[class*="-SidebarNavLink"] { color: var(--sd-muted) !important; border-left-color: transparent !important; }
+[class*="-SidebarNavLink"]:hover, [class*="-SidebarNavLink"].sidebar-active {
+  color: var(--sd-accent) !important; background: rgba(63, 200, 255, .1) !important; border-left-color: var(--sd-accent) !important;
+}
+[class*="-SearchInput"], [class*="-SearchContainer"] input { background: var(--sd-field) !important; color: var(--sd-text) !important; }
+[class*="-ViewControlsButton"] { color: var(--sd-muted) !important; }
+[class*="-ViewControlsButton"]:hover { color: var(--sd-accent) !important; }
+
+/* the editor */
+[class*="-ToolbarContainer"] { background: rgba(10, 15, 48, .95) !important; box-shadow: 0 1px 0 var(--sd-line) !important; color: var(--sd-text) !important; }
+[class*="-ToolbarSection"], [class*="-BackCollection"], [class*="-BackArrow"], [class*="-ToolbarToggleLabel"] { color: var(--sd-text) !important; border-color: var(--sd-line) !important; }
+[class*="-ControlPaneContainer"], [class*="-EditorContainer"], [class*="-StyledSplitPane"] { background: var(--sd-bg) !important; color: var(--sd-text) !important; }
+[class*="-PreviewPaneContainer"] { background: #fff !important; }
+/* field names sit on a tab above each field */
+[class*="-FieldLabel"] { background: var(--sd-panel-2) !important; color: var(--sd-muted) !important; border-color: var(--sd-line) !important; }
+[class*="-FieldLabel"]::after { background: transparent !important; }
+[class*="-ControlContainer"]:focus-within > [class*="-FieldLabel"] { background: linear-gradient(90deg, var(--sd-accent), var(--sd-accent-2)) !important; color: #fff !important; }
+[class*="-ControlHint"] { color: var(--sd-muted) !important; }
+/* inputs, text areas, selects and the rich text editor */
+[class*="-TextControl"], [class*="-ControlContainer"] input, [class*="-ControlContainer"] textarea,
+[class*="-ControlContainer"] [class*="-control"], [class*="-EditorControlBar"], [class*="-ControlContainer"] [data-slate-editor] {
+  background: var(--sd-field) !important; color: var(--sd-text) !important; border-color: var(--sd-line) !important;
+}
+[class*="-ControlContainer"] input:focus, [class*="-ControlContainer"] textarea:focus, [class*="-TextControl"]:focus { box-shadow: var(--sd-glow) !important; border-color: var(--sd-accent) !important; }
+/* Decap's rich text is dark grey on white; make it light on the dark field */
+[data-slate-editor], [data-slate-editor] p, [data-slate-editor] li, [data-slate-editor] span { color: var(--sd-text) !important; }
+/* blocks and dropdowns draw unnamed white panels; let the dark field show through */
+[data-slate-void="true"] [class^="css-"]:not([class*="-TopBar"]):not(button):not(input):not(textarea),
+[class*="-ControlContainer"] [class*="-container"] { background-color: transparent !important; }
+[class*="-ControlContainer"] [class*="-singleValue"], [class*="-ControlContainer"] [class*="-placeholder"] { color: var(--sd-text) !important; }
+[class*="-ControlContainer"] [class*="-menu"] { background: var(--sd-panel-2) !important; color: var(--sd-text) !important; }
+[class*="-ControlContainer"] [class*="-option"]:hover { background: rgba(63, 200, 255, .18) !important; }
+[class*="-EditorControlBar"] button, [class*="-StyledToolbarButton"] { color: var(--sd-muted) !important; }
+[class*="-EditorControlBar"] button:hover, [class*="-StyledToolbarButton"]:hover { color: var(--sd-accent) !important; }
+/* blocks (editor components) inside the rich text editor */
+[class*="-TopBar"] { background: var(--sd-panel-2) !important; color: var(--sd-text) !important; border-color: var(--sd-line) !important; }
+[data-slate-void="true"] > div { border-color: var(--sd-line) !important; }
+
+/* main actions: Publish, New, Save get the accent gradient */
+[class*="-PublishedButton"], [class*="-AppHeaderQuickNewButton"], [class*="-CollectionTopNewButton"],
+[class*="-SaveButton"], [class*="-PublishButton"] {
+  background: linear-gradient(90deg, var(--sd-accent), var(--sd-accent-2)) !important; color: #fff !important;
+  box-shadow: 0 4px 16px rgba(80, 120, 255, .35) !important;
+}
+/* status badges and the toggle switch */
+[class*="-ToggleBackground"] { background: var(--sd-panel-2) !important; }
+[class*="-ToggleContainer"][class*="-StyledToggle"] input:checked + [class*="-ToggleBackground"] { background: var(--sd-accent) !important; }
+
+/* login screen: Decap's logo swaps for a SpaceDash wordmark */
+[class*="-StyledAuthenticationPage"] { background: transparent !important; }
+[class*="-StyledAuthenticationPage"] [class*="-DecapLogoIcon"], [class*="-StyledAuthenticationPage"] [class*="-CustomLogoIcon"] { display: none !important; }
+[class*="-StyledAuthenticationPage"]::before {
+  content: "SpaceDash"; display: block; text-align: center; margin-bottom: 26px; font: 800 3.4rem/1 system-ui, sans-serif; letter-spacing: -.02em;
+  background: linear-gradient(90deg, var(--sd-accent), var(--sd-accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 4px 18px rgba(120, 140, 255, .45));
+}
+[class*="-LoginButton"] { background: linear-gradient(90deg, var(--sd-accent), var(--sd-accent-2)) !important; color: #fff !important;
+  border: 0 !important; box-shadow: 0 6px 22px rgba(90, 120, 255, .45) !important; }
+[class*="-GoBackButtonStyle"] { color: var(--sd-muted) !important; }
+
+/* dropdown menus and modals */
+[class*="-DropdownList"], [class*="-StyledDropdownList"], .ReactModal__Content { background: var(--sd-panel-2) !important; color: var(--sd-text) !important; }
+[class*="-StyledMenuItem"], [class*="-DropdownItem"] { color: var(--sd-text) !important; }
+[class*="-StyledMenuItem"]:hover, [class*="-DropdownItem"]:hover { background: rgba(63, 200, 255, .15) !important; }
+a { color: var(--sd-accent); }

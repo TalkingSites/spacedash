@@ -1,6 +1,6 @@
 {
   "name": "spacedash",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "SpaceDash: an open source site editor built on Decap CMS, added with one script tag",
   "license": "GPL-3.0",
   "author": "TalkingSites",
@@ -20,7 +20,7 @@
   "jsdelivr": "dist/spacedash.min.js",
   "unpkg": "dist/spacedash.min.js",
   "scripts": {
-    "build": "esbuild src/index.js --bundle --format=iife --target=es2019 --outfile=dist/spacedash.js && esbuild src/index.js --bundle --format=iife --target=es2019 --minify --outfile=dist/spacedash.min.js",
+    "build": "esbuild src/index.js --bundle --format=iife --target=es2019 --loader:.css=text --outfile=dist/spacedash.js && esbuild src/index.js --bundle --format=iife --target=es2019 --loader:.css=text --minify --outfile=dist/spacedash.min.js",
     "prepublishOnly": "npm run build"
   },
   "devDependencies": {

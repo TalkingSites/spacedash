@@ -6,6 +6,7 @@
 import { registerWidgets } from "./widgets.js";
 import { registerBlocks } from "./blocks.js";
 import { startTweaks } from "./tweaks.js";
+import spaceTheme from "./theme.css";
 
 const DECAP = "https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js";
 const ICONS = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/";
@@ -29,6 +30,8 @@ const DEFAULTS = {
   blocks: true,
   // the site's own scripts (e.g. its own blocks), run in order after Decap loads and before it starts
   scripts: [],
+  // "space" for SpaceDash's space theme, or false for Decap's own look
+  theme: "space",
 };
 
 const config = { ...DEFAULTS, ...window.SPACEDASH };
@@ -54,6 +57,11 @@ function loadScript(src) {
 // have to be registered before it starts
 window.CMS_MANUAL_INIT = true;
 addStylesheet(ICONS + "bootstrap-icons.css");
+if (config.theme === "space") {
+  const style = document.createElement("style");
+  style.textContent = spaceTheme;
+  document.head.appendChild(style);
+}
 loadScript(DECAP).then(async () => {
   registerWidgets(config);
   if (config.blocks) registerBlocks();

@@ -26,11 +26,11 @@ export function registerWidgets(config) {
       var value = this.props.value || "";
       var q = this.state.query.trim().toLowerCase();
       var matches = this.state.names.filter(function (n) { return !q || n.indexOf(q) !== -1; }).slice(0, 96);
-      var link = { border: 0, background: "none", cursor: "pointer", color: "#3a69c7", font: "inherit", padding: 0 };
+      var link = { border: 0, background: "none", cursor: "pointer", color: "var(--sd-accent, #3a69c7)", font: "inherit", padding: 0 };
       if (!this.state.open) {
         return h("div", { className: this.props.classNameWrapper, style: { padding: 0, border: 0, display: "flex", gap: "14px", alignItems: "center" } },
           h("span", { style: { fontSize: "28px", width: "40px", textAlign: "center" } }, value ? h("i", { className: "bi bi-" + value }) : "–"),
-          h("span", { style: { color: "#798291" } }, value || "No icon"),
+          h("span", { style: { color: "var(--sd-muted, #798291)" } }, value || "No icon"),
           h("button", { type: "button", id: this.props.forID, style: link, onClick: function () { self.setState({ open: true }); } }, value ? "Change icon" : "Choose an icon"),
           value ? h("button", { type: "button", style: link, onClick: function () { self.props.onChange(""); } }, "Remove") : null
         );
@@ -41,21 +41,21 @@ export function registerWidgets(config) {
           h("input", {
             type: "search", autoFocus: true, placeholder: value ? value + " (search to change)" : "Search icons, e.g. ticket, mail, calendar",
             value: this.state.query, onChange: function (e) { self.setState({ query: e.target.value }); },
-            style: { flex: 1, padding: "8px 10px", border: "1px solid #dfdfe3", borderRadius: "6px", font: "inherit" },
+            style: { flex: 1, padding: "8px 10px", border: "1px solid var(--sd-line, #dfdfe3)", borderRadius: "6px", font: "inherit", background: "var(--sd-field, #fff)", color: "var(--sd-text, inherit)" },
           }),
           h("button", { type: "button", style: link, onClick: function () { self.setState({ open: false, query: "" }); } }, "Close")
         ),
-        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(44px, 1fr))", gap: "4px", maxHeight: "190px", overflowY: "auto", border: "1px solid #dfdfe3", borderRadius: "8px", padding: "10px", background: "#fff" } },
+        h("div", { style: { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(44px, 1fr))", gap: "4px", maxHeight: "190px", overflowY: "auto", border: "1px solid var(--sd-line, #dfdfe3)", borderRadius: "8px", padding: "10px", background: "var(--sd-field, #fff)" } },
           matches.map(function (n) {
             var on = n === value;
             return h("button", {
               key: n, type: "button", title: n, "aria-label": n, "aria-pressed": on,
               onClick: function () { self.props.onChange(n); self.setState({ query: "", open: false }); },
-              style: { height: "44px", fontSize: "20px", border: on ? "2px solid #3a69c7" : "1px solid #eee", borderRadius: "6px", background: on ? "#e8efff" : "#fff", cursor: "pointer" },
+              style: { height: "44px", fontSize: "20px", border: on ? "2px solid var(--sd-accent, #3a69c7)" : "1px solid var(--sd-line, #eee)", borderRadius: "6px", background: on ? "var(--sd-panel-2, #e8efff)" : "var(--sd-panel, #fff)", color: "var(--sd-text, inherit)", cursor: "pointer" },
             }, h("i", { className: "bi bi-" + n }));
           })
         ),
-        h("div", { style: { fontSize: "12px", color: "#798291", marginTop: "4px" } },
+        h("div", { style: { fontSize: "12px", color: "var(--sd-muted, #798291)", marginTop: "4px" } },
           "From Bootstrap Icons. ",
           h("a", { href: "https://icons.getbootstrap.com", target: "_blank", rel: "noreferrer" }, "Browse all icons")
         )
