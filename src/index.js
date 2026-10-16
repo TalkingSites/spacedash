@@ -27,6 +27,8 @@ const DEFAULTS = {
   iconsJson: ICONS + "bootstrap-icons.json",
   // the SpaceClub template's partials as editor blocks (Button, Feed, Gallery, Form)
   blocks: true,
+  // the site's own scripts (e.g. its own blocks), run in order after Decap loads and before it starts
+  scripts: [],
 };
 
 const config = { ...DEFAULTS, ...window.SPACEDASH };
@@ -52,9 +54,10 @@ function loadScript(src) {
 // have to be registered before it starts
 window.CMS_MANUAL_INIT = true;
 addStylesheet(ICONS + "bootstrap-icons.css");
-loadScript(DECAP).then(() => {
+loadScript(DECAP).then(async () => {
   registerWidgets(config);
   if (config.blocks) registerBlocks();
+  for (const src of config.scripts) await loadScript(src);
   window.CMS.init();
   startTweaks(config);
 });

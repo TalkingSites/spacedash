@@ -38,6 +38,8 @@ Set `window.SPACEDASH` before the script tag to change the defaults:
     loginLinks: [{ text: "Create account", href: "https://..." }],
     siteCss: ["/assets/css/styles.css"],  // stylesheets the style and colour pickers use
     blocks: true,                  // the SpaceClub template blocks
+    scripts: ["/admin/blocks.js"], // your own scripts (e.g. your own blocks with CMS.registerEditorComponent),
+                                   // run after Decap loads and before it starts
   };
 </script>
 ```
