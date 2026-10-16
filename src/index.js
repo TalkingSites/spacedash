@@ -6,6 +6,7 @@
 import { registerWidgets } from "./widgets.js";
 import { registerBlocks } from "./blocks.js";
 import { startTweaks } from "./tweaks.js";
+import { registerPreview } from "./preview.js";
 import spaceTheme from "./theme.css";
 
 const DECAP = "https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js";
@@ -32,6 +33,13 @@ const DEFAULTS = {
   scripts: [],
   // "space" for SpaceDash's space theme, or false for Decap's own look
   theme: "space",
+  // the real preview: rendered by the site's server with its own Eleventy setup (false for Decap's)
+  preview: true,
+  previewUrl: "/api/preview",
+  // in local development, where Eleventy's dev server has no /api
+  localPreviewUrl: "http://localhost:8092/api/preview",
+  // how long to wait after typing stops before asking for a new preview (ms)
+  previewDelay: 700,
 };
 
 const config = { ...DEFAULTS, ...window.SPACEDASH };
@@ -65,6 +73,7 @@ if (config.theme === "space") {
 loadScript(DECAP).then(async () => {
   registerWidgets(config);
   if (config.blocks) registerBlocks();
+  if (config.preview) await registerPreview(config);
   for (const src of config.scripts) await loadScript(src);
   window.CMS.init();
   startTweaks(config);

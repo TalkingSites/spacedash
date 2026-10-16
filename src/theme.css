@@ -111,3 +111,15 @@ body {
 [class*="-StyledMenuItem"], [class*="-DropdownItem"] { color: var(--sd-text) !important; }
 [class*="-StyledMenuItem"]:hover, [class*="-DropdownItem"]:hover { background: rgba(63, 200, 255, .15) !important; }
 a { color: var(--sd-accent); }
+
+/* the date picker, file and image choosers, small widget buttons and toolbar status buttons */
+/* each field's own wrapper (the unnamed panel under its label) */
+[class*="-DateTimeControl"], [class*="-ControlContainer"] > div[class^="css-"]:not([class*="-ControlTopbar"]) { background: var(--sd-field) !important; color: var(--sd-text) !important; border-color: var(--sd-line) !important; }
+[class*="-DateTimeControl"] input { color-scheme: dark; background: transparent !important; color: var(--sd-text) !important; }
+[class*="-widget-Buttons"], [class*="-FileWidgetButton"] { background: var(--sd-panel-2) !important; color: var(--sd-accent) !important; box-shadow: 0 0 0 1px var(--sd-line) !important; }
+[class*="-DropdownButton"][class*="-P"] { background: var(--sd-panel-2) !important; color: var(--sd-accent) !important; }
+[class*="-DeleteButton"] { background: rgba(255, 90, 80, .14) !important; color: #ff9a92 !important; }
+[class*="-DeleteButton"]:hover { background: rgba(255, 90, 80, .28) !important; }
+/* the rich text editor's own box, and the editor column below the last field */
+[class*="-ControlContainer"] div:has(> [data-slate-editor]) { background: var(--sd-field) !important; }
+.Pane1, .Pane1 > div { background: var(--sd-bg) !important; }

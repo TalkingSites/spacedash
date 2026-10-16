@@ -40,9 +40,26 @@ Set `window.SPACEDASH` before the script tag to change the defaults:
     blocks: true,                  // the SpaceClub template blocks
     scripts: ["/admin/blocks.js"], // your own scripts (e.g. your own blocks with CMS.registerEditorComponent),
                                    // run after Decap loads and before it starts
+    theme: "space",                // or false for Decap's own look
+    preview: true,                 // the real preview (see below), or false for Decap's
   };
 </script>
 ```
+
+## Real preview
+
+The preview pane shows the page as your site's own Eleventy setup renders it, with its layout, CSS and blocks, instead of Decap's plain preview. Your site's server answers `POST /api/preview` with the renderer from this package:
+
+```js
+const preview = require("spacedash/preview").createPreview({
+  root: __dirname,              // the site's folder (with its Eleventy config and node_modules)
+  authorize: (req) => isEditor(req),   // only signed-in editors may render
+});
+// in the request handler:
+if (url.pathname === "/api/preview") return preview(req, res, siteOrigin);
+```
+
+Each request renders a scratch copy of the site, so the real files are never touched. Set `preview: false` to keep Decap's own preview. In local development the editor falls back to `localPreviewUrl` (default `http://localhost:8092/api/preview`).
 
 ## Develop
 
