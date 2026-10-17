@@ -41,7 +41,9 @@ Set `window.SPACEDASH` before the script tag to change the defaults:
     scripts: ["/admin/blocks.js"], // your own scripts (e.g. your own blocks with CMS.registerEditorComponent),
                                    // run after Decap loads and before it starts
     theme: "space",                // or false for Decap's own look
+    mode: "system",                // the space theme's starting mode: "system", "light" or "dark"
     preview: true,                 // the real preview (see below), or false for Decap's
+    contentTypes: true,            // content types made in SpaceDash (see below)
   };
 </script>
 ```
@@ -61,6 +63,12 @@ if (url.pathname === "/api/preview") return preview(req, res, siteOrigin);
 
 Each request renders a scratch copy of the site, so the real files are never touched. Set `preview: false` to keep Decap's own preview. In local development the editor falls back to `localPreviewUrl` (default `http://localhost:8092/api/preview`).
 
+## Content types
+
+Like Strapi's content-type builder, but editing files: people make their own types (Team, Projects...) with their own fields on the **Content types** screen. Each type gets its own section in the sidebar and a block for the rich text **+** menu that lists its entries in any page.
+
+The site keeps the schema in `src/_data/contentTypes.json` (`{ "items": [] }`) and publishes it, with each type's list page, at `/admin/content-types.json`. Its Eleventy setup builds each entry's page and each type's list page. The SpaceClub template does all of this; a site without `/admin/content-types.json` simply doesn't get content types.
+
 ## Develop
 
 ```bash
@@ -68,7 +76,7 @@ npm install
 npm run build    # dist/spacedash.js and dist/spacedash.min.js
 ```
 
-To try a change, copy `dist/spacedash.js` into a site's `/admin/` folder and point the script tag at it.
+`pm2 start ecosystem.config.cjs` runs a dev build that rebuilds on every save, at `http://localhost:8093/spacedash.js`. A SpaceClub site's `/admin/` on localhost uses it while it's running, and the CDN otherwise.
 
 ## Licence
 

@@ -59,15 +59,38 @@ function createPreview({ root, authorize, input = "src", corsOrigins = [] }) {
   let copied = false;
   let queue = Promise.resolve();
 
-  // a copy of the site's source, made once; node_modules is linked, not copied
+  // A copy of the site's source; node_modules is linked, not copied. Before each render
+  // it picks up files changed since the last one (on a live site nothing changes, but in
+  // local development the templates do), and drops files that are gone.
+  let synced = 0;
   function prepare() {
-    if (copied) return;
-    for (const name of fs.readdirSync(root)) {
-      if (SKIP.has(name)) continue;
-      fs.cpSync(path.join(root, name), path.join(scratch, name), { recursive: true });
+    if (!copied) {
+      fs.symlinkSync(path.join(root, "node_modules"), path.join(scratch, "node_modules"), "dir");
+      copied = true;
     }
-    fs.symlinkSync(path.join(root, "node_modules"), path.join(scratch, "node_modules"), "dir");
-    copied = true;
+    const since = synced;
+    synced = Date.now();
+    const seen = new Set();
+    (function walk(rel) {
+      for (const entry of fs.readdirSync(path.join(root, rel), { withFileTypes: true })) {
+        if (!rel && SKIP.has(entry.name)) continue;
+        const sub = path.join(rel, entry.name);
+        seen.add(sub);
+        if (entry.isDirectory()) walk(sub);
+        else if (entry.isFile() && fs.statSync(path.join(root, sub)).mtimeMs >= since) {
+          fs.mkdirSync(path.dirname(path.join(scratch, sub)), { recursive: true });
+          fs.copyFileSync(path.join(root, sub), path.join(scratch, sub));
+        }
+      }
+    })("");
+    (function prune(rel) {
+      for (const entry of fs.readdirSync(path.join(scratch, rel), { withFileTypes: true })) {
+        if (!rel && SKIP.has(entry.name)) continue;
+        const sub = path.join(rel, entry.name);
+        if (!seen.has(sub)) fs.rmSync(path.join(scratch, sub), { recursive: true, force: true });
+        else if (entry.isDirectory()) prune(sub);
+      }
+    })("");
   }
 
   // Writes the edited entry over the scratch copy's file, in the same format as the

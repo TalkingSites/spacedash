@@ -26,9 +26,11 @@
   "unpkg": "dist/spacedash.min.js",
   "scripts": {
     "build": "esbuild src/index.js --bundle --format=iife --target=es2019 --loader:.css=text --outfile=dist/spacedash.js && esbuild src/index.js --bundle --format=iife --target=es2019 --loader:.css=text --minify --outfile=dist/spacedash.min.js",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build",
+    "dev": "esbuild src/index.js --bundle --format=iife --target=es2019 --loader:.css=text --outfile=dist/spacedash.js --watch=forever --servedir=dist --serve=8093"
   },
   "devDependencies": {
-    "esbuild": "^0.28.2"
+    "esbuild": "^0.28.2",
+    "js-yaml": "^5.5.0"
   }
 }

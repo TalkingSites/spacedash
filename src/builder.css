@@ -1,0 +1,101 @@
+/* The content types builder. Colours come from the space theme's variables, with plain
+   fallbacks for sites that use Decap's own look (theme: false). */
+.sd-ct {
+  --c-panel: var(--sd-panel, #fff); --c-panel-2: var(--sd-panel-2, #f3f4f8); --c-field: var(--sd-field, #fff);
+  --c-line: var(--sd-line, #dfe1ea); --c-text: var(--sd-text, #1c2033); --c-muted: var(--sd-muted, #6b7088);
+  --c-accent: var(--sd-accent, #3a69c7); --c-accent-2: var(--sd-accent-2, #7b5cf0); --c-shadow: var(--sd-shadow, rgba(20, 30, 80, .12));
+  --c-danger: var(--sd-danger, #c8322a); --c-danger-bg: var(--sd-danger-bg, rgba(220, 60, 50, .1));
+  display: grid; grid-template-columns: 260px 1fr; gap: 20px; align-items: start; color: var(--c-text); font-size: 15px;
+}
+@media (max-width: 900px) { .sd-ct { grid-template-columns: 1fr; } }
+.sd-ct button { font: inherit; cursor: pointer; }
+.sd-ct .bi { line-height: 1; }
+.sd-ct-head { display: flex; align-items: center; justify-content: space-between; font-size: 12px; font-weight: 700; color: var(--c-muted); margin: 6px 4px 10px; }
+
+/* the field's own Decap label and frame aren't needed: the builder has its own */
+[class*="-ControlContainer"]:has(.sd-ct) > [class*="-ControlTopbar"] { display: none !important; }
+[class*="-ControlContainer"]:has(.sd-ct) > div[class^="css-"] { background: transparent !important; border: 0 !important; padding: 0 !important; box-shadow: none !important; }
+[class*="-ControlPaneContainer"]:has(.sd-ct) { max-width: 1240px !important; }
+
+/* types, down the left */
+.sd-ct-types { position: sticky; top: 90px; padding: 12px; border-radius: 16px; background: var(--c-panel); box-shadow: 0 0 0 1px var(--c-line), 0 10px 30px var(--c-shadow); }
+.sd-ct-type { display: flex; align-items: center; gap: 10px; width: 100%; padding: 10px; margin-bottom: 4px; border: 0; border-radius: 12px; background: none; color: inherit; text-align: left; }
+.sd-ct-type:hover { background: var(--c-panel-2); }
+.sd-ct-type.on { background: linear-gradient(90deg, color-mix(in srgb, var(--c-accent) 18%, transparent), color-mix(in srgb, var(--c-accent-2) 12%, transparent));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--c-accent) 45%, transparent); }
+.sd-ct-type.on .sd-ct-tico { box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-accent) 30%, transparent), 0 4px 12px var(--c-shadow); }
+.sd-ct-tico { flex: none; width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; color: #fff; font-size: 16px;
+  background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2)); box-shadow: 0 4px 12px var(--c-shadow); }
+.sd-ct-tico.big { width: 52px; height: 52px; border-radius: 16px; font-size: 24px; }
+.sd-ct-tname { flex: 1; min-width: 0; display: grid; font-weight: 600; }
+.sd-ct-tname small { font-weight: 400; color: var(--c-muted); font-size: 12px; overflow: hidden; text-overflow: ellipsis; }
+.sd-ct-count { font-size: 12px; color: var(--c-muted); padding: 2px 8px; border-radius: 999px; background: var(--c-panel-2); }
+/* buttons: the same three kinds as the rest of SpaceDash (main, secondary, danger) */
+.sd-ct-btn, .sd-ct-new, .sd-ct-add, .sd-ct-listpage { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 8px 14px; border-radius: 8px;
+  font-weight: 600; font-size: 14px; text-decoration: none !important; color: var(--c-accent) !important; background: var(--c-panel-2); border: 1px solid var(--c-line); }
+.sd-ct-btn:hover, .sd-ct-new:hover, .sd-ct-add:hover, .sd-ct-listpage:hover { background: color-mix(in srgb, var(--c-accent) 12%, var(--c-panel-2)); border-color: color-mix(in srgb, var(--c-accent) 45%, transparent); }
+.sd-ct-new, .sd-ct-add { width: 100%; margin-top: 6px; }
+.sd-ct-note { margin: 10px 4px 0; font-size: 12px; color: var(--c-muted); }
+
+/* the chosen type */
+.sd-ct-main, .sd-ct-empty { padding: 22px; border-radius: 18px; background: var(--c-panel); box-shadow: 0 0 0 1px var(--c-line), 0 10px 30px var(--c-shadow); }
+.sd-ct-empty { text-align: center; padding: 56px 32px; }
+.sd-ct-empty h2 { margin: 12px 0 6px; }
+.sd-ct-empty p { color: var(--c-muted); max-width: 46ch; margin: 0 auto 20px; }
+.sd-ct-big { font-size: 46px; background: linear-gradient(135deg, var(--c-accent), var(--c-accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.sd-ct-primary { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border: 0; border-radius: 8px; color: #fff; font-weight: 600; font-size: 14px;
+  background: linear-gradient(90deg, var(--c-accent), var(--c-accent-2)); box-shadow: 0 4px 16px var(--c-shadow); }
+.sd-ct-title { display: flex; align-items: center; gap: 10px; margin-bottom: 18px; flex-wrap: wrap; }
+.sd-ct-title > div { flex: 1; min-width: 0; }
+.sd-ct-title h2 { margin: 0; font-size: 22px; }
+.sd-ct-title small { color: var(--c-muted); }
+.sd-ct-remove { display: inline-flex; align-items: center; gap: 6px; border: 0; border-radius: 8px; padding: 8px 14px; background: var(--c-danger-bg); color: var(--c-danger); font-weight: 600; font-size: 14px; }
+.sd-ct-remove:hover { filter: brightness(1.15); }
+.sd-ct-problems { margin: 0 0 16px; padding: 10px 14px 10px 30px; border-radius: 12px; background: var(--c-danger-bg); color: var(--c-danger); font-size: 13px; }
+
+.sd-ct-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 16px; margin-bottom: 22px; }
+@media (max-width: 700px) { .sd-ct-grid { grid-template-columns: 1fr; } }
+.sd-ct-input { display: grid; gap: 6px; align-content: start; }
+.sd-ct-input.wide { grid-column: 1 / -1; }
+.sd-ct-input > span { font-size: 12px; font-weight: 700; color: var(--c-muted); }
+.sd-ct-input small { font-size: 12px; color: var(--c-muted); }
+.sd-ct-input input, .sd-ct-input textarea, .sd-ct-input select { width: 100%; box-sizing: border-box; padding: 9px 12px; border-radius: 10px; font: inherit;
+  border: 1px solid var(--c-line); background: var(--c-field); color: var(--c-text); outline: none; }
+.sd-ct-input input:focus, .sd-ct-input textarea:focus, .sd-ct-input select:focus { border-color: var(--c-accent); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c-accent) 25%, transparent); }
+.sd-ct-affix { display: flex; align-items: center; border: 1px solid var(--c-line); border-radius: 10px; background: var(--c-field); }
+.sd-ct-affix:focus-within { border-color: var(--c-accent); }
+.sd-ct-affix input { border: 0 !important; box-shadow: none !important; background: transparent !important; }
+.sd-ct-affix em { font-style: normal; color: var(--c-muted); padding: 0 2px 0 12px; }
+.sd-ct-affix em:last-child { padding: 0 12px 0 2px; }
+.sd-ct-check { display: flex; align-items: center; gap: 8px; align-self: end; padding-bottom: 10px; font-weight: 600; }
+
+/* fields, as rows */
+.sd-ct-fields { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.sd-ct-field { border-radius: 12px; background: var(--c-panel-2); box-shadow: 0 0 0 1px var(--c-line); }
+.sd-ct-field.open { box-shadow: 0 0 0 1.5px var(--c-accent); }
+.sd-ct-row { display: flex; align-items: center; gap: 12px; padding: 9px 12px; cursor: pointer; }
+.sd-ct-field.locked .sd-ct-row { cursor: default; opacity: .75; }
+.sd-ct-ficon { flex: none; width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; color: var(--c-accent); background: var(--c-field); box-shadow: 0 0 0 1px var(--c-line); }
+.sd-ct-fname { flex: 1; min-width: 0; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.sd-ct-fname b { color: var(--c-danger); }
+.sd-ct-row code { font-size: 12px; color: var(--c-muted); background: none; }
+.sd-ct-badge { font-size: 12px; padding: 3px 10px; border-radius: 999px; color: var(--c-accent); background: color-mix(in srgb, var(--c-accent) 12%, transparent); white-space: nowrap; }
+.sd-ct-actions { display: flex; gap: 2px; min-width: 84px; justify-content: flex-end; }
+.sd-ct-actions button { width: 28px; height: 28px; border: 0; border-radius: 8px; background: none; color: var(--c-muted); }
+.sd-ct-actions button:hover:not(:disabled) { background: var(--c-field); color: var(--c-accent); }
+.sd-ct-actions button.danger:hover { color: var(--c-danger); }
+.sd-ct-actions button:disabled { opacity: .3; cursor: default; }
+.sd-ct-lock { color: var(--c-muted); padding-right: 8px; }
+.sd-ct-fdetails { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; padding: 4px 14px 16px 54px; }
+@media (max-width: 700px) { .sd-ct-fdetails { grid-template-columns: 1fr; padding-left: 14px; } .sd-ct-row code { display: none; } }
+
+/* choosing a new field's type */
+.sd-ct-add { margin-top: 12px; }
+.sd-ct-picker { margin-top: 14px; padding: 14px; border-radius: 14px; background: var(--c-panel-2); box-shadow: 0 0 0 1px var(--c-line); }
+.sd-ct-close { border: 0; background: none; color: var(--c-muted); }
+.sd-ct-pick-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 8px; }
+.sd-ct-pick-grid button { display: grid; grid-template-columns: auto 1fr; grid-template-rows: auto auto; column-gap: 10px; align-items: center; text-align: left; padding: 10px; border-radius: 12px;
+  border: 1px solid var(--c-line); background: var(--c-panel); color: inherit; }
+.sd-ct-pick-grid button:hover { border-color: var(--c-accent); box-shadow: 0 6px 18px var(--c-shadow); }
+.sd-ct-pick-grid .sd-ct-ficon { grid-row: span 2; }
+.sd-ct-pick-grid small { color: var(--c-muted); font-size: 12px; }

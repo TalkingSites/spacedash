@@ -3,20 +3,24 @@
 // short pause in typing, and keeps showing the last good render while it waits.
 //
 // Decap looks preview templates up by collection name (or file name, for file
-// collections), so one template is registered under every name in config.yml.
-export async function registerPreview(config) {
+// collections), so one template is registered under every one of those names.
+export async function registerPreview(config, cms) {
   const h = window.h;
-  const names = await collectionNames();
+  // The site's server answers /api/preview; in local development (Eleventy's dev server has
+  // no API) the local preview server does. A site with neither keeps Decap's own preview.
+  // a preview server answers a plain GET with "POST only" (405); a site without one, 404
+  const answers = (url) => fetch(url, { cache: "no-store" }).then((r) => r.status !== 404).catch(() => false);
+  const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  const endpoint = (await answers(config.previewUrl)) ? config.previewUrl
+    : local && (await answers(config.localPreviewUrl)) ? config.localPreviewUrl : null;
+  if (!endpoint) return;
+  const previewUrl = async () => endpoint;
 
-  // the site's server answers /api/preview; in local development (Eleventy's dev server
-  // has no API) it falls back to the local preview server
-  let endpoint = null;
-  async function previewUrl() {
-    if (endpoint) return endpoint;
-    const local = /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
-    const probe = await fetch(config.previewUrl, { method: "OPTIONS" }).catch(() => null);
-    endpoint = probe && probe.status !== 404 ? config.previewUrl : local ? config.localPreviewUrl : config.previewUrl;
-    return endpoint;
+  const names = new Set();
+  for (const c of cms.collections || []) {
+    if (c.name === "content_types") continue;
+    names.add(c.name);
+    for (const f of c.files || []) names.add(f.name);
   }
 
   function token() {
@@ -87,13 +91,4 @@ export async function registerPreview(config) {
   });
 
   for (const name of names) window.CMS.registerPreviewTemplate(name, Preview);
-}
-
-// Every `name:` in config.yml (collections, their files, and fields too, which is harmless)
-async function collectionNames() {
-  const link = document.querySelector('link[rel="cms-config-url"]');
-  const text = await fetch(link ? link.href : "config.yml").then((r) => r.text()).catch(() => "");
-  const names = new Set();
-  for (const m of text.matchAll(/(?:^|[\s{,])name:\s*["']?([\w-]+)/g)) names.add(m[1]);
-  return names;
 }
