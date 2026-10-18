@@ -65,7 +65,11 @@ function createPreview({ root, authorize, input = "src", corsOrigins = [] }) {
   let synced = 0;
   function prepare() {
     if (!copied) {
-      fs.symlinkSync(path.join(root, "node_modules"), path.join(scratch, "node_modules"), "dir");
+      // the site's node_modules, or the nearest one above it (a site inside a package's repo
+      // uses the repo's)
+      let modules = root;
+      while (!fs.existsSync(path.join(modules, "node_modules")) && path.dirname(modules) !== modules) modules = path.dirname(modules);
+      fs.symlinkSync(path.join(modules, "node_modules"), path.join(scratch, "node_modules"), "dir");
       copied = true;
     }
     const since = synced;

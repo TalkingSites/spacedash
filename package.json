@@ -1,6 +1,6 @@
 {
   "name": "spacedash",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "SpaceDash: an open source site editor built on Decap CMS, added with one script tag",
   "license": "GPL-3.0",
   "author": "TalkingSites",
@@ -15,11 +15,13 @@
   "type": "module",
   "files": [
     "dist",
-    "server"
+    "server",
+    "CHANGELOG.md"
   ],
   "exports": {
     ".": "./dist/spacedash.js",
-    "./preview": "./server/preview.cjs"
+    "./preview": "./server/preview.cjs",
+    "./media": "./server/media.cjs"
   },
   "main": "dist/spacedash.js",
   "jsdelivr": "dist/spacedash.min.js",

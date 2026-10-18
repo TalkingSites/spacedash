@@ -130,6 +130,7 @@ export function registerTypeBlocks(types) {
     window.CMS.registerEditorComponent({
       id: `type_${t.name}`,
       label: t.label || t.name,
+      collapsed: true,
       fields: [
         { name: "listTitle", label: "Heading", widget: "string", required: false },
         { name: "listLimit", label: "How many", widget: "string", default: "all", pattern: ["^(all|[1-9][0-9]*)$", "A number, or all"], hint: "A number, or all" },

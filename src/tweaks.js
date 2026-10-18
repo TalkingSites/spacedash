@@ -81,6 +81,20 @@ export function startTweaks(config) {
     return true;
   }
 
+  // Blocks start closed (see blocks.js), but one just added from the + menu opens, so its
+  // form is ready to fill in. Decap marks those with shortcodeNew; each opens once.
+  function openNewBlocks() {
+    document.querySelectorAll('[data-slate-editor] [data-slate-void="true"]').forEach(function (block) {
+      if (block.dataset.spacedashOpened) return;
+      var own = findProp(block, function (p) { return p.element && p.element.type; });
+      if (!own || !own.element.data || !own.element.data.shortcodeNew) return;
+      var expand = block.querySelector('[data-testid="expand-button"][aria-label="Expand"]');
+      if (!expand) return;
+      block.dataset.spacedashOpened = "1";
+      expand.click();
+    });
+  }
+
   function addRemoveButtons() {
     document.querySelectorAll('[data-slate-editor] [data-slate-void="true"]').forEach(function (block) {
       if (block.querySelector(".spacedash-remove")) return;
@@ -107,7 +121,7 @@ export function startTweaks(config) {
     });
   }
 
-  new MutationObserver(function () { relabel(); addRemoveButtons(); }).observe(document.documentElement, { childList: true, subtree: true });
+  new MutationObserver(function () { relabel(); addRemoveButtons(); openNewBlocks(); }).observe(document.documentElement, { childList: true, subtree: true });
   relabel();
   addRemoveButtons();
 }

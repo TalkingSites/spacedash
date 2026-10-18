@@ -25,6 +25,8 @@ export function partialBlock({ id, label, file, fields = [], vars, read = (d) =>
     id,
     label,
     fields,
+    // closed until clicked, so a page full of blocks reads as a list of what's on it
+    collapsed: true,
     pattern,
     fromBlock(match) {
       const data = {};
@@ -106,16 +108,40 @@ export function registerBlocks() {
     label: "Gallery",
     file: "gallery",
     fields: [
-      { name: "path", label: "Image folder", widget: "string", hint: "e.g. assets/uploads" },
+      { name: "path", label: "Image folder", widget: "sd-folder" },
       { name: "filterPrefix", label: "Only files starting with", widget: "string", required: false },
     ],
-    preview: (d) => esc(d.path),
+    preview: (d) => esc(d.path ? d.path.replace(/^assets\/images\//, "") : "No folder chosen"),
   });
 
+  // Every photo from the events and posts that have a Gallery folder, in one grid
+  // (partials/galleryAll.njk). Shows nothing until one of them has photos.
   partialBlock({
     id: "galleryAll",
-    label: "Gallery (all event and post galleries)",
+    label: "Photo wall (every event and post gallery)",
     file: "galleryAll",
+    fields: [
+      { name: "galleryLimit", label: "How many photos", widget: "string", required: false, pattern: ["^[0-9]*$", "A number, or leave empty for all"], hint: "Leave empty for all" },
+    ],
+    preview: (d) => `Photos from events and posts with a Gallery folder · ${d.galleryLimit ? esc(d.galleryLimit) : "all"}`,
+  });
+
+  // An event's date, time and place (partials/event-details.njk), anywhere in its text.
+  // With "Hide the date, time and place at the top" on, they show only where this block is.
+  partialBlock({
+    id: "eventDetails",
+    label: "Event details",
+    file: "event-details",
+    fields: [
+      { name: "showDate", label: "Date", widget: "boolean", default: true },
+      { name: "showTime", label: "Time", widget: "boolean", default: true },
+      { name: "showPlace", label: "Place", widget: "boolean", default: true },
+      { name: "linkPlace", label: "Link the place to its map", widget: "boolean", default: true, hint: "Uses the event's Map link" },
+    ],
+    preview: (d) => {
+      const parts = [d.showDate !== false && "date", d.showTime !== false && "time", d.showPlace !== false && `place${d.linkPlace !== false ? " (linked)" : ""}`].filter(Boolean);
+      return `This event's ${parts.join(", ") || "nothing"}`;
+    },
   });
 
   // A form. Left empty, it uses the page's own form settings (like the Contact page);

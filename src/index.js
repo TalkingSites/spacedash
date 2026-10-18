@@ -15,6 +15,7 @@ import { registerBuilder } from "./builder.js";
 import builderStyles from "./builder.css";
 import { startModes } from "./mode.js";
 import spaceTheme from "./theme.css";
+import { registerMedia } from "./media.js";
 
 const DECAP = "https://unpkg.com/decap-cms@3.16.3/dist/decap-cms.js";
 const ICONS = "https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/";
@@ -50,6 +51,10 @@ const DEFAULTS = {
   localPreviewUrl: "http://localhost:8092/api/preview",
   // how long to wait after typing stops before asking for a new preview (ms)
   previewDelay: 700,
+  // SpaceDash's media library (every image in the site, by folder) in place of Decap's
+  media: true,
+  // in local development, the local preview server lists and saves the images on disk
+  localMediaUrl: "http://localhost:8092/api/media",
   // content types (Strapi-style): types people make themselves, read from the site's schema
   contentTypes: true,
   // the collection that lists the site's pages (a folder collection; a type's list page is one of them)
@@ -102,6 +107,7 @@ loadScript(DECAP).then(async () => {
     style.textContent = builderStyles;
     document.head.appendChild(style);
   }
+  if (config.media) registerMedia(cms, config);
   if (config.preview) await registerPreview(config, cms);
   for (const src of config.scripts) await loadScript(src);
   window.CMS.init({ config: cms });
