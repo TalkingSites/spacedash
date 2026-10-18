@@ -1,6 +1,6 @@
 # SpaceDash
 
-An open source site editor built on [Decap CMS](https://decapcms.org), added with one script tag. It's the editor behind [SpaceClub](https://github.com/TalkingSites/spaceclub-template) sites, and it adds:
+An open source site editor built on [Decap CMS](https://decapcms.org), added with one script tag. It's the editor behind [SpaceClub](https://github.com/TalkingSites/spaceclub) sites, and it adds:
 
 - an icon picker (Bootstrap Icons) and style and colour pickers drawn in the site's own CSS
 - the SpaceClub template's partials as editor blocks (Button, Feed, Gallery, Form), each with a remove button
